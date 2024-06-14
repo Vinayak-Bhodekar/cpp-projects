@@ -128,8 +128,8 @@ class TOH{
             push(s2,size_2,temp);
         }
         else{
-            int index = stack_size - size_2 - 1;
-            string top_of_s2 = s2[index-1];
+            int index = stack_size - size_2;
+            string top_of_s2 = s2[index];
             int index_of_top_s2 = findIndex(cubics,top_of_s2);
             int index_of_top_s1 = findIndex(cubics,temp);
             if(index_of_top_s1 < index_of_top_s2){
@@ -154,11 +154,6 @@ class TOH{
 int main(){
     TOH obj(10);
     obj.cubes_exchange(1,2);
-    obj.cubes_exchange(1,3);
-    obj.cubes_exchange(2,3);
-    obj.cubes_exchange(1,2);
-    obj.cubes_exchange(3,1);
-    obj.cubes_exchange(3,2);
     obj.cubes_exchange(1,2);
     obj.print();
     return 0;
