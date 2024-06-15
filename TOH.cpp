@@ -1,5 +1,6 @@
 #include<iostream>
 #include<vector>
+#include<cstdlib>
 #include<algorithm>
 using namespace std;
 class TOH{
@@ -7,6 +8,7 @@ class TOH{
     vector<string> stack1;
     vector<string> stack2;
     vector<string> stack3;
+    vector<string> winning_stack;
     int stack_size;
     int size1;
     int size2;
@@ -28,9 +30,12 @@ class TOH{
             size2 = 0;
             size3 = 0;
             move_counts = 0;
+            winning_stack = stack1;
         }
         void print(){
-            cout<<"MOVES :- "<<move_counts<<"\n";
+            cout<<"                 ||TOWER OF HANOI||\n";
+            cout<<"                 ``````````````````\n\n";
+            cout<<"MOVES :- "<<move_counts<<"\n\n";
             for (int i = 0; i < stack_size; i++) {
                 if (i < stack1.size()) {
                     cout << stack1[i] << "\t\t";
@@ -75,42 +80,37 @@ class TOH{
             string temp = pop(stack1,size1);
             if(temp != ""){
                 game_rule(stack1,size1,stack2,size2,temp);
-                move_counts++;
             }
         }
         else if (stack_no1 == 1 && stack_no2 == 3){
             string temp = pop(stack1,size1);
             if(temp != ""){
                 game_rule(stack1,size1,stack3,size3,temp);
-                move_counts++;
             }
         }
         else if (stack_no1 == 2 && stack_no2 == 1){
             string temp = pop(stack2,size2);
             if(temp != ""){
                 game_rule(stack2,size2,stack1,size1,temp);
-                move_counts++;
             }
         }
         else if (stack_no1 == 2 && stack_no2 == 3){
             string temp = pop(stack2,size2);
             if(temp != ""){
                 game_rule(stack2,size2,stack3,size3,temp);
-                move_counts++;
             }
         }
         else if (stack_no1 == 3 && stack_no2 == 1){
             string temp = pop(stack3,size3);
             if(temp != ""){
                 game_rule(stack3,size3,stack1,size1,temp);
-                move_counts++;
             }
         }
         else if (stack_no1 == 3 && stack_no2 == 2){
             string temp = pop(stack3,size3);
             if(temp != ""){
                 game_rule(stack3,size3,stack2,size2,temp);
-                move_counts++;
+                
             }
         }
         else{
@@ -126,6 +126,7 @@ class TOH{
     void game_rule(vector<string> &s1,int &size_1,vector<string> &s2,int &size_2,string temp){
         if (size_2 == 0){
             push(s2,size_2,temp);
+            move_counts++;
         }
         else{
             int index = stack_size - size_2;
@@ -134,6 +135,7 @@ class TOH{
             int index_of_top_s1 = findIndex(cubics,temp);
             if(index_of_top_s1 < index_of_top_s2){
                 push(s2,size_2,temp);
+                move_counts++;
             }
             else{
                 push(s1,size_1,temp);
@@ -142,19 +144,55 @@ class TOH{
         }
     }
     bool areVectorsEqual(vector<string>& vec1,vector<string>& vec2) {
-    return vec1 == vec2;
+        return vec1 == vec2;
     }
-    void winning_condition(vector<string> stack){
-        if(areVectorsEqual(stack, stack1)){
-            cout<<"player WINs the game at "<<move_counts;
+    void player_input(){
+        int a,b;
+    cout<<"Enter the numbers between 1-3 for POP & PUSH.\n\n";
+    while(true){
+        cout<<"Enter the POP stack no. :- ";
+        cin>>a;
+        if (a >= 1 && a <= 3){
+            break;
+        }
+        else{
+            cout<<"Enter valid number.\n";
         }
     }
-    void Interface(){}
+    while(true){
+        cout<<"Enter the PUSH stack no. :- ";
+        cin>>b;
+        if (b >= 1 && b <= 3 && b != a){
+            break;
+        }
+        else{
+            cout<<"Enter valid number.\n";
+        }
+    }
+        cubes_exchange(a,b);
+    }
+    int game_play(){
+        while(true){
+            system("CLS");
+            if(areVectorsEqual(winning_stack, stack3)){
+                cout<<"player WINs the game at "<<move_counts<<" moves.";
+                return 1;
+            }
+            print();
+            player_input();
+        }
+    }
 };
 int main(){
-    TOH obj(10);
-    obj.cubes_exchange(1,2);
-    obj.cubes_exchange(1,2);
-    obj.print();
+    system("CLS");
+    int no_of_disc;
+    {
+        cout<<"                 ||TOWER OF HANOI||\n";
+        cout<<"                 ``````````````````\n\n";
+        cout<<"Enter the number of discs:- ";
+        cin>>no_of_disc;
+    }
+    TOH obj(no_of_disc);
+    obj.game_play();
     return 0;
 }
